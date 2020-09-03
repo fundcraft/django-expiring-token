@@ -1,8 +1,8 @@
 [run]
-source = django_expiring_token
+source = drf_expiring_token
 omit =
-    django_expiring_token/urls.py
-    django_expiring_token/admin.py
+    drf_expiring_token/urls.py
+    drf_expiring_token/admin.py
 
 [report]
 exclude_lines =

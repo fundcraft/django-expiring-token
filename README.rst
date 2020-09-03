@@ -15,16 +15,16 @@ Quick start
 -----------
 1. Do NOT add "restframework.authtoken" to you INSTALLED_APPS.
 
-2. Add "django_expiring_token" to your INSTALLED_APPS setting like this::
+2. Add "drf_expiring_token" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = [
         ...
-        'django_expiring_token',
+        'drf_expiring_token',
     ]
 
 3. Include the polls URLconf in your project urls.py like this::
 
-    path('custom-url/', include('django_expiring_token.urls')),
+    path('custom-url/', include('drf_expiring_token.urls')),
 
 4. Add the expiration time in `settings.py`::
 
@@ -36,7 +36,7 @@ Quick start
     REST_FRAMEWORK = {
         'DEFAULT_AUTHENTICATION_CLASSES': (
             ...
-            'django_expiring_token.authentication.ExpiringTokenAuthentication',
+            'drf_expiring_token.authentication.ExpiringTokenAuthentication',
             ...
         ),
     }
