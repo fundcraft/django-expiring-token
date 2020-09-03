@@ -6,7 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
-from django_expiring_token.settings import custom_settings
+from drf_expiring_token.settings import custom_settings
 
 
 class ExpiringToken(models.Model):

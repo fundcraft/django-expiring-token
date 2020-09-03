@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from django_expiring_token.models import ExpiringToken
+from drf_expiring_token.models import ExpiringToken
 
 
 @admin.register(ExpiringToken)

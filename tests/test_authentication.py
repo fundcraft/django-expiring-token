@@ -6,8 +6,8 @@ from django.test import TestCase
 
 from rest_framework.exceptions import AuthenticationFailed
 
-from django_expiring_token.authentication import ExpiringTokenAuthentication
-from django_expiring_token.models import ExpiringToken
+from drf_expiring_token.authentication import ExpiringTokenAuthentication
+from drf_expiring_token.models import ExpiringToken
 
 
 class ExpiringTokenAuthenticationTestCase(TestCase):

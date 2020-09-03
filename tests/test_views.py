@@ -7,7 +7,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from django_expiring_token.models import ExpiringToken
+from drf_expiring_token.models import ExpiringToken
 
 
 class ExpiringTokenAuthenticationTestCase(TestCase):

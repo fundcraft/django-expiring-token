@@ -5,8 +5,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 
 # this return left time
-from django_expiring_token.models import ExpiringToken
-from django_expiring_token.settings import custom_settings
+from drf_expiring_token.models import ExpiringToken
+from drf_expiring_token.settings import custom_settings
 
 
 # token checker if token expired or not

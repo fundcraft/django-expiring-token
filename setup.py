@@ -3,9 +3,9 @@ import sys
 
 from setuptools import setup
 
-import django_expiring_token
+import drf_expiring_token
 
-version = django_expiring_token.__version__
+version = drf_expiring_token.__version__
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
@@ -28,9 +28,9 @@ if sys.argv[-1] == 'publish':
     sys.exit()
 
 setup(
-    name='django-expiring-token',
+    name='drf-expiring-token',
     version=version,
-    packages=['django_expiring_token', 'django_expiring_token.migrations'],
+    packages=['drf_expiring_token', 'drf_expiring_token.migrations'],
     install_requires=[
         'djangorestframework>=3.4.0'
     ],
@@ -42,9 +42,9 @@ setup(
     license='MIT License',  # example license
     description='Expiring token with expiration time update for Django Rest Framework',
     long_description=README,
-    author='Klemen Štrajhar',
-    url='https://github.com/KlemenS189/django-expiring-token',
-    author_email='klemen.strajhar@gmail.si',
+    author='Klemen Štrajhar, Alessandro Mariotti',
+    url='https://github.com/ZupitDevs/django-expiring-token',
+    author_email='alessandro.mariotti@zupit.it',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',

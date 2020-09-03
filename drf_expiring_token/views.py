@@ -3,9 +3,9 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from rest_framework.views import APIView
 
-from django_expiring_token.authentication import token_expire_handler
-from django_expiring_token.models import ExpiringToken
-from django_expiring_token.serializers import UserSigninSerializer
+from drf_expiring_token.authentication import token_expire_handler
+from drf_expiring_token.models import ExpiringToken
+from drf_expiring_token.serializers import UserSigninSerializer
 
 
 class LoginView(APIView):

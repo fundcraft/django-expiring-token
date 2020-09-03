@@ -4,8 +4,8 @@ from time import sleep
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from django_expiring_token.authentication import ExpiringTokenAuthentication, is_token_expired
-from django_expiring_token.models import ExpiringToken
+from drf_expiring_token.authentication import ExpiringTokenAuthentication, is_token_expired
+from drf_expiring_token.models import ExpiringToken
 
 
 class ExpiringTokenAuthenticationTestCase(TestCase):

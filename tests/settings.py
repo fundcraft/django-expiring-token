@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'django_expiring_token',
+    'drf_expiring_token',
     'tests',
 ]
 
