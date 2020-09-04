@@ -4,6 +4,6 @@ __all__ = [
     'views'
 ]
 
-__version__ = '1.0.2'
+__version__ = '1.0.4'
 
 default_app_config = "drf_expiring_token.apps.ExpiringTokensConfig"

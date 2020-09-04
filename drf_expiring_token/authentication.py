@@ -37,7 +37,7 @@ class ExpiringTokenAuthentication(TokenAuthentication):
     @transaction.atomic()
     def authenticate_credentials(self, key):
         try:
-            token = ExpiringToken.objects.get(key=key)
+            token = ExpiringToken.objects.select_related('user').get(key=key)
         except ExpiringToken.DoesNotExist:
             raise AuthenticationFailed("Invalid Token")
 
