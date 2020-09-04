@@ -1,9 +1,10 @@
-from datetime import timedelta
-from time import sleep
+from unittest import mock
+from unittest.mock import patch
 
+import pytz
 from django.contrib.auth.models import User
 from django.test import TestCase
-
+from django.utils import timezone
 from rest_framework.exceptions import AuthenticationFailed
 
 from drf_expiring_token.authentication import ExpiringTokenAuthentication
@@ -25,16 +26,19 @@ class ExpiringTokenAuthenticationTestCase(TestCase):
             password=self.password
         )
 
+        self.test_instance = ExpiringTokenAuthentication()
+
         self.key = 'jhfbgkjasnlkfmlkn'
-        self.token = ExpiringToken.objects.create(
+
+    def _create_token(self):
+        return ExpiringToken.objects.create(
             user=self.user,
             key=self.key
         )
 
-        self.test_instance = ExpiringTokenAuthentication()
-
     def test_valid_token(self):
         """Check that a valid token authenticates correctly."""
+        self.token = self._create_token()
         result = self.test_instance.authenticate_credentials(self.key)
 
         self.assertEqual(result[0], self.user)
@@ -51,6 +55,8 @@ class ExpiringTokenAuthenticationTestCase(TestCase):
 
     def test_inactive_user(self):
         """Check that a token for an inactive user cannot authenticate."""
+        self.token = self._create_token()
+
         # Make the user inactive
         self.user.is_active = False
         self.user.save()
@@ -64,12 +70,15 @@ class ExpiringTokenAuthenticationTestCase(TestCase):
 
     def test_expired_token(self):
         """Check that an expired token cannot authenticate."""
-        # let the token expire
-        sleep(0.1)
+        with patch('django.utils.timezone.now',
+                   mock.MagicMock(return_value=timezone.datetime(2020, 8, 17, 8, 1, 0, tzinfo=pytz.UTC))):
+            self.token = self._create_token()
 
-        try:
-            self.test_instance.authenticate_credentials(self.key)
-        except AuthenticationFailed as e:
-            self.assertEqual(e.__str__(), 'The Token is expired')
-        else:
-            self.fail("AuthenticationFailed not raised.")
+        with patch('django.utils.timezone.now',
+                   mock.MagicMock(return_value=timezone.datetime(2020, 8, 17 , 8, 1, 40, tzinfo=pytz.UTC))):
+            try:
+                self.test_instance.authenticate_credentials(self.key)
+            except AuthenticationFailed as e:
+                self.assertEqual(e.__str__(), 'The Token is expired')
+            else:
+                self.fail("AuthenticationFailed not raised.")

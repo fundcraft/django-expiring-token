@@ -1,9 +1,11 @@
-from datetime import timedelta
-from time import sleep
+from unittest import mock
+from unittest.mock import patch
 
+import pytz
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APIClient
 
@@ -76,20 +78,25 @@ class ExpiringTokenAuthenticationTestCase(TestCase):
         self.assertEqual(resp.data['detail'], 'Invalid Credentials')
 
     def test_replace_expired_token(self):
-        self.token.delete()
-        token = ExpiringToken.objects.create(user=self.user)
-        key_1 = token.key
+        with patch('django.utils.timezone.now',
+                   mock.MagicMock(return_value=timezone.datetime(2020, 8, 17, 8, 1, 0, tzinfo=pytz.UTC))):
+            self.token.delete()
+            token = ExpiringToken.objects.create(user=self.user)
+            key_1 = token.key
 
-        data = {'username': 'test_username', 'password': 'test_password'}
+            data = {'username': 'test_username', 'password': 'test_password'}
 
-        # let the token expire
-        sleep(0.5)
-        resp = self.client.post(reverse('obtain-token'), data)
+        with patch('django.utils.timezone.now',
+                   mock.MagicMock(return_value=timezone.datetime(2020, 8, 17, 8, 1, 40, tzinfo=pytz.UTC))):
+            resp = self.client.post(reverse('obtain-token'), data)
 
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+            self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
-        token = ExpiringToken.objects.first()
-        key_2 = token.key
-        self.assertEqual(token.user, self.user)
-        self.assertEqual(resp.data['token'], token.key)
-        self.assertTrue(key_1 != key_2)
+            token = ExpiringToken.objects.first()
+            key_2 = token.key
+            self.assertEqual(token.user, self.user)
+            self.assertEqual(resp.data['token'], token.key)
+            self.assertTrue(key_1 != key_2)
+
+    def create_datetime(self, year, month, day, hour, minutes=0, seconds=0, microseconds=0, tzinfo=pytz.UTC):
+        return

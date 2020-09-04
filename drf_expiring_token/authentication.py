@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.db import transaction
 from django.utils import timezone
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.exceptions import AuthenticationFailed
@@ -33,6 +34,7 @@ class ExpiringTokenAuthentication(TokenAuthentication):
     and new one with different key will be created
     """
 
+    @transaction.atomic()
     def authenticate_credentials(self, key):
         try:
             token = ExpiringToken.objects.get(key=key)
