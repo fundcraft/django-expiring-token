@@ -34,7 +34,7 @@ class ExpiringTokenAuthentication(TokenAuthentication):
     and new one with different key will be created
     """
 
-    @transaction.atomic()
+    @transaction.atomic(savepoint=False)
     def authenticate_credentials(self, key):
         try:
             token = ExpiringToken.objects.select_related('user').get(key=key)
