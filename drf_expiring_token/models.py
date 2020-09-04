@@ -12,16 +12,16 @@ from drf_expiring_token.settings import custom_settings
 class ExpiringToken(models.Model):
     class Meta:
         db_table = 'expiring_authtoken'
-        verbose_name = _("Token")
-        verbose_name_plural = _("Tokens")
+        verbose_name = "Token"
+        verbose_name_plural = "Tokens"
 
-    key = models.CharField(_("Key"), max_length=50, primary_key=True)
+    key = models.CharField("Key", max_length=50, primary_key=True)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, related_name='auth_token',
-        on_delete=models.CASCADE, verbose_name=_("User")
+        on_delete=models.CASCADE, verbose_name="User"
     )
-    created = models.DateTimeField(_("Created"), auto_now_add=True)
-    expires = models.DateTimeField(_("Expires in"), )
+    created = models.DateTimeField("Created", auto_now_add=True)
+    expires = models.DateTimeField("Expires in")
 
     def save(self, *args, **kwargs):
         if not self.key:
