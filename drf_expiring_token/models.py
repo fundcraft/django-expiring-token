@@ -23,7 +23,8 @@ class ExpiringToken(models.Model):
     created = models.DateTimeField("Created", auto_now_add=True)
     expires = models.DateTimeField(
         "Expires in",
-        default=timezone.now()+custom_settings.EXPIRING_TOKEN_DURATION
+        default=lambda: (timezone.now()
+                         + custom_settings.EXPIRING_TOKEN_DURATION)
     )
 
     def save(self, *args, **kwargs):
