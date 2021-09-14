@@ -17,7 +17,7 @@ class ExpiringToken(models.Model):
 
     key = models.CharField("Key", max_length=50, primary_key=True)
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, related_name='auth_token',
+        settings.AUTH_USER_MODEL, related_name='expiring_auth_token',
         on_delete=models.CASCADE, verbose_name="User"
     )
     created = models.DateTimeField("Created", auto_now_add=True)
