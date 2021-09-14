@@ -36,7 +36,7 @@ class LoginView(APIView):
         }, status=HTTP_200_OK)
 
 
-class UniqueSessionLoginView(APIView):
+class UniqueLoginView(APIView):
     serializer_class = UserSigninSerializer
     permission_classes = []
 

@@ -35,36 +35,6 @@ class LoginView(APIView):
             'token': token.key
         }, status=HTTP_200_OK)
 
-
-class UniqueSessionLoginView(APIView):
-    serializer_class = UserSigninSerializer
-    permission_classes = []
-
-    def post(self, request):
-        signin_serializer = UserSigninSerializer(data=request.data)
-        if not signin_serializer.is_valid():
-            return Response(signin_serializer.errors, status=HTTP_400_BAD_REQUEST)
-
-        user = authenticate(
-            username=signin_serializer.data['username'],
-            password=signin_serializer.data['password']
-        )
-
-        if not user:
-            return Response({'detail': 'Invalid Credentials'}, status=HTTP_400_BAD_REQUEST)
-
-        token, created = ExpiringToken.objects.get_or_create(user=user)
-        if not created:
-            token.delete()
-            token = ExpiringToken.objects.create(user=user)
-
-        # token_expire_handler will check, if the token is expired it will generate new one
-        is_expired, token = token_expire_handler(token)  # The implementation will be described further
-        return Response({
-            'token': token.key
-        }, status=HTTP_200_OK)
-
-
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated,]
 
