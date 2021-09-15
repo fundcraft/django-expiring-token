@@ -9,6 +9,10 @@ from django.utils.translation import gettext as _
 from drf_expiring_token.settings import custom_settings
 
 
+def expires_default():
+    return timezone.now() + custom_settings.EXPIRING_TOKEN_DURATION
+
+                     
 class ExpiringToken(models.Model):
     class Meta:
         db_table = 'expiring_authtoken'
@@ -21,11 +25,7 @@ class ExpiringToken(models.Model):
         on_delete=models.CASCADE, verbose_name="User"
     )
     created = models.DateTimeField("Created", auto_now_add=True)
-    expires = models.DateTimeField(
-        "Expires in",
-        default=lambda: (timezone.now()
-                         + custom_settings.EXPIRING_TOKEN_DURATION)
-    )
+    expires = models.DateTimeField("Expires in", default=expires_default)
 
     def save(self, *args, **kwargs):
         if not self.key:
