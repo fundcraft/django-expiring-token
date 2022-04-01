@@ -34,6 +34,9 @@ class ExpiringTokenAuthentication(TokenAuthentication):
     and new one with different key will be created
     """
 
+    def get_expiration_token(self):
+        return timezone.now() + custom_settings.EXPIRING_TOKEN_DURATION
+
     @transaction.atomic(savepoint=False)
     def authenticate_credentials(self, key):
         try:
@@ -48,7 +51,7 @@ class ExpiringTokenAuthentication(TokenAuthentication):
         if is_expired:
             raise AuthenticationFailed("The Token is expired")
 
-        token.expires = timezone.now() + custom_settings.EXPIRING_TOKEN_DURATION
+        token.expires = self.get_expiration_token()
         token.save()
 
         return token.user, token
